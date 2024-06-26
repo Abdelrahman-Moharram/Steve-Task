@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.http import HttpResponseNotFound
 
 import json
@@ -9,15 +9,13 @@ from django.contrib import messages
 
 def index(request):
     if request.method == 'POST':
-        print(request.POST)
         book_form = BookForm(request.POST, request.FILES)
         
         if book_form.is_valid():
             book_form = book_form.save()
             messages.success(request, message=f'Book {book_form.name} Added Successfully',extra_tags='success')
-            return redirect(to='/')
-        print(book_form.errors.as_json())
-        return HttpResponse(book_form.errors.as_json(), status = 400, content_type='application/json')
+            return redirect("/")
+        return JsonResponse(data={'errors':book_form.errors.as_json()}, status=400, content_type='application/json')
     
     return render(request, 'home/index.html', {
         'books': Book.objects.all(), 
@@ -31,7 +29,7 @@ def details(request, id):
         return render(request, 'home/details.html', 
             {
                 'book':Book.objects.get(id=id), 
-                'books':Book.objects.exclude(id=id).order_by('price').all()[0:5]
+                'books':Book.objects.exclude(id=id).order_by('price').all()[0:4]
             }
         )
     except:
@@ -45,7 +43,7 @@ def update(request, id):
         if book_form.is_valid():
             book_form = book_form.save()
             messages.success(request, message=f'Book {book_form.name} updated Successfully',extra_tags='success')
-            return redirect(to='/')
+            return HttpResponse({}, status = 200, content_type='application/json')
         return HttpResponse(book_form.errors.as_json(), status = 400, content_type='application/json')
     
 

@@ -40,14 +40,21 @@
     <!-- Related Projects Row -->
     <h3 class="my-4">Top Books</h3>
   
-    <div class="row">
+    <div class="d-flex gap-5 my-5">
   
         {% for b in books %}
-        <div class="col-md-3 col-sm-6 mb-4">
+        <!-- <div class="col-md-3 col-sm-6 mb-4">
           <a href="{% url 'home:book' b.id %}">
-              <img class="img-fluid" src="{{b.poster.url}}" alt="">
-            </a>
-        </div>
+            <img class="img-fluid" src="{{b.poster.url}}" alt="">
+            <h3>{{b.name}}</h3>
+          </a>
+        </div> -->
+        <a href="{% url 'home:book' b.id %}" class="card" style="width: 18rem;">
+          <img src="{{b.poster.url}}" class="card-img-top" style="width: 280px; height: 270px;" alt="{{b.name}}">
+          <div class="card-body">
+            <p class="card-text">{{b.name}}</p>
+          </div>
+        </a>
         {% endfor %}
   
     </div>

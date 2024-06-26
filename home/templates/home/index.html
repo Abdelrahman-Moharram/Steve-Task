@@ -41,7 +41,7 @@
                     <tr>
                         <th scope="row">{{book.id}}</th>
                         <td>{{book.name}}</td>
-                        <td>{{book.description}}</td>
+                        <td class="text-truncate"  style="max-width: 150px;">{{book.description}}</td>
                         <td>{{book.publish_at}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -63,35 +63,34 @@
 </div>
 
 <script>
-    function getFormData(){
-        let id              = document.getElementById('id').value
-        let name            = document.getElementById('exampleFormControlInput1').value
-        let description     = document.getElementById('exampleFormControlTextarea1').value
-        let date            = document.getElementById('date').value
-        let price           = document.getElementById("price").value      
-        let author          = document.getElementById("author").value     
-        let category        = document.getElementById("category").value
-        let poster          = document.getElementById("poster").value
+    // function getFormData(){
+    //     let id              = document.getElementById('id').value
+    //     let name            = document.getElementById('exampleFormControlInput1').value
+    //     let description     = document.getElementById('exampleFormControlTextarea1').value
+    //     let date            = document.getElementById('date').value
+    //     let price           = document.getElementById("price").value      
+    //     let author          = document.getElementById("author").value     
+    //     let category        = document.getElementById("category").value
+    //     let poster          = document.getElementById("poster").value
         
-        return {
-            id,
-            name,
-            description,
-            price,
-            author,
-            category,
-            publish_at:date,
-            poster
-        }
-    }
+    //     return {
+    //         id,
+    //         name,
+    //         description,
+    //         price,
+    //         author,
+    //         category,
+    //         publish_at:date,
+    //         poster
+    //     }
+    // } 
 
     function setFormData({id, name, description, publish_at, price, author_id, category_id, poster}){
-        console.log(author, category);
 
         document.getElementById('id').value = id
-        document.getElementById('exampleFormControlInput1').value = name
-        document.getElementById('exampleFormControlTextarea1').value = description
-        document.getElementById("date").value = publish_at
+        document.getElementById('name').value = name
+        document.getElementById('description').value = description
+        document.getElementById("publish_at").value = publish_at
 
         document.getElementById("price").value = price
         document.getElementById("author").value = author_id
@@ -119,30 +118,76 @@
         let formEl = document.forms.bookForm;
         const data = new FormData(formEl)
         if (data){
-            fetch(`${data.get('id')}/edit`, {body:data, method:'POST', })
-                .then(res=>{
-                    if(res.status === 400)
-                        document.getElementById('bookFormalerts').innerHTML +=`
-                            <div class="alert alert-danger" role="alert">
-                                Invalid Data
+            const response = await fetch(`${data.get('id')}/edit`, {body:data, method:'POST', });
+            
+            if(response.status === 400)
+            {
+                let res_data = await response.json();
+                console.log(response.status);
+                document.getElementById('bookFormalerts').innerHTML +=`
+                    <div class="alert alert-danger" role="alert">
+                        Invalid Data
                             </div>
-                        `
-                })
+                    `
+                res_data = JSON.parse(res_data?.errors)
+                if (res_data){
+                    for(let err in res_data){
+                        let ul = document.getElementById(`${err}-errors`)
+                        ul.innerHTML = ''
+                        for (let li of res_data[err]){
+                            ul.innerHTML += `<li>${li?.message}</li>`
+                        }
+                        
+                    }
+                }
+            }else{
+                window.location.reload()
+            }
+            
         }
     }
     async function  AddBook(){
         let formEl = document.forms.bookForm;
         const data = new FormData(formEl)
         if (data){
-            fetch('', {body:data, method:'POST', })
-                .then(res=>{
-                    if(res.status === 400)
-                        document.getElementById('bookFormalerts').innerHTML +=`
-                            <div class="alert alert-danger" role="alert">
-                                Invalid Data
+            const response = await fetch('', {body:data, method:'POST', });
+            
+            if(response.status === 400)
+            {
+                let res_data = await response.json();
+                document.getElementById('bookFormalerts').innerHTML +=`
+                    <div class="alert alert-danger" role="alert">
+                        Invalid Data
                             </div>
-                        `
-                })
+                    `
+                res_data = JSON.parse(res_data?.errors)
+                if (res_data){
+                    for(let err in res_data){
+                        let ul = document.getElementById(`${err}-errors`)
+                        ul.innerHTML = ''
+                        for (let li of res_data[err]){
+                            ul.innerHTML += `<li>${li?.message}</li>`
+                        }
+                        
+                    }
+                }
+            }
+            else{
+                
+                window.location.reload()
+            }
+                    
+                // .then(res=>{
+                //     console.log(res);
+                //     if(res.status === 400)
+                //         document.getElementById('bookFormalerts').innerHTML +=`
+                //             <div class="alert alert-danger" role="alert">
+                //                 Invalid Data
+                //             </div>
+                //         `
+                // }).catch(err=>{
+                //     console.log('errs', err)
+                // })
         }
     }
 </script>
