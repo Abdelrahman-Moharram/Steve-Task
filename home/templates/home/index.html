@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Book</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <div class="modal-body">
+                
+                {% include "home/BookForm.html" %}
+            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="SaveBook()" class="btn btn-primary" >Save changes</button>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="container pt-5">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-id="" data-bs-target="#exampleModal">
+        <i class="las la-plus"></i> Add New Book
+    </button>
+    {% if books %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Published</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+                
+                {% for book in books %}
+                    <tr>
+                        <th scope="row">{{book.id}}</th>
+                        <td>{{book.name}}</td>
+                        <td>{{book.description}}</td>
+                        <td>{{book.publish_at}}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a type="button" href="{% url 'home:book' book.id %}" class="btn btn-success" title="View"><i class="las la-eye"></i></a>
+                                <button data-bs-toggle="modal" data-id="{{book.id}}" data-bs-target="#exampleModal" onclick="UpdateModal('{{book.id}}')" class="btn btn-primary" title="edit"><i class="las la-edit"></i></button>
+                                <a href="{% url 'home:delete' book.id %}" class="btn btn-danger" title="delete"><i class="las la-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class='h1 text-center my-5 fw-bold'>
+            <i class="las la-file"></i>
+            No Books Added yet !
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function getFormData(){
+        let id = document.getElementById('id').value
+        let name = document.getElementById('exampleFormControlInput1').value
+        let description = document.getElementById('exampleFormControlTextarea1').value
+        let date = document.getElementById('date').value
+
+        return {
+            'id': id,
+            'name': name,
+            'description':description,
+            'publish_at':date
+        }
+    }
+
+    function setFormData({id, name, description, date}){
+        document.getElementById('id').value = id
+        document.getElementById('exampleFormControlInput1').value = name
+        document.getElementById('exampleFormControlTextarea1').value = description
+        document.getElementById('date').value = date
+
+    }
+    function UpdateModal(id){
+        fetch(`${id}/edit`, {method:'GET'})
+        .then(res=>{
+            return res.json()
+            
+        }).then(data=>{
+            setFormData(data?.book)
+        })
+    }
+    function SaveBook(){
+        if(document.getElementById('id')?.value)
+            return UpdateBook()
+        return AddBook()
+    }
+
+    async function  UpdateBook(){
+        const data = getFormData()
+        if (data){
+            fetch(`${data.id}/edit`, {body:JSON.stringify(data), method:'POST', })
+                .then(res=>{
+                    if(res.status === 400)
+                        document.getElementById('bookFormalerts').innerHTML +=`
+                            <div class="alert alert-danger" role="alert">
+                                Invalid Data
+                            </div>
+                        `
+                })
+        }
+    }
+    async function  AddBook(){
+        const data = getFormData()
+        if (data){
+            fetch('', {body:JSON.stringify(data), method:'POST', })
+                .then(res=>{
+                    if(res.status === 400)
+                        document.getElementById('bookFormalerts').innerHTML +=`
+                            <div class="alert alert-danger" role="alert">
+                                Invalid Data
+                            </div>
+                        `
+                })
+        }
+    }
+</script>
+{% endblock body %}
