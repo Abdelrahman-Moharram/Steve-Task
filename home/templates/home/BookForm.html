@@ -3,8 +3,11 @@
     <input type="text" name="id" id="id" value="" hidden>
 
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Book Name</label>
-        <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="some book name">
+        <label for="name" class="form-label">Book Name</label>
+        <input type="text" name="name" class="form-control" id="name" placeholder="some book name">
+        <ul id="name-errors" class="text-danger">
+
+        </ul>
     </div>
     <div class="mb-3">
         <label for="category" class="form-label">Category</label>
@@ -15,6 +18,9 @@
                 <option value="{{category.id}}">{{category.name}}</option>
             {% endfor %}
         </select>
+        <ul id="category-errors" class="text-danger">
+
+        </ul>
     </div>
     <div class="mb-3">
         <label for="author" class="form-label">Author</label>
@@ -25,24 +31,39 @@
                 <option value="{{author.id}}">{{author.name}}</option>
             {% endfor %}
         </select>
+        <ul id="author-errors" class="text-danger">
+
+        </ul>
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        <ul id="description-errors" class="text-danger">
+
+        </ul>
     </div>
 
     <div class="mb-3">
-        <label for="date" class="form-label">Publish Date</label>
-        <input name="publish_at" type="date" class="form-control" id="date" >
+        <label for="publish_at" class="form-label">Publish Date</label>
+        <input name="publish_at" type="date" class="form-control" id="publish_at" >
+        <ul id="publish_at-errors" class="text-danger">
+
+        </ul>
     </div>
 
     <div class="mb-3">
         <label for="price" class="form-label">price</label>
         <input name="price" type="number" class="form-control" id="price" >
+        <ul id="price-errors" class="text-danger">
+
+        </ul>
     </div>
     <div class="mb-3">
         <label for="poster" class="form-label">poster</label>
         <input name="poster" type="file" class="form-control" id="poster" >
+        <ul id="poster-errors" class="text-danger">
+
+        </ul>
     </div>
       
 </form>
