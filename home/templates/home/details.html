@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+    <!-- Page Content -->
+    <div class="container mt-5">
+        <nav aria-label="breadcrumb my-5">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{book.name}}</li>
+            </ol>
+        </nav>
+
+    <!-- Portfolio Item Heading -->
+    <h1  style="margin: 50px 0px 50px;">
+        {{book.name}}
+    </h1>
+  
+    <!-- Portfolio Item Row -->
+    <div class="row">
+  
+      <div class="col-md-8">
+        <img class="img-fluid" src="{{book.poster.url}}" alt="">
+      </div>
+  
+      <div class="col-md-4">
+        <h3 class="my-3">Description</h3>
+        <p>{{book.description}}</p>
+        <h3 class="my-3">Book Details</h3>
+        <ul>
+          <li>Category: {{book.category.name}}</li>
+          <li>Author: {{book.author.name}}</li>
+          <li>Price: {{book.price}}</li>
+        </ul>
+      </div>
+  
+    </div>
+    <!-- /.row -->
+  
+    <!-- Related Projects Row -->
+    <h3 class="my-4">Top Books</h3>
+  
+    <div class="row">
+  
+        {% for b in books %}
+        <div class="col-md-3 col-sm-6 mb-4">
+          <a href="{% url 'home:book' b.id %}">
+              <img class="img-fluid" src="{{b.poster.url}}" alt="">
+            </a>
+        </div>
+        {% endfor %}
+  
+    </div>
+    <!-- /.row -->
+  
+    </div>
+  <!-- /.container -->
+  
+{% endblock body %}
+    

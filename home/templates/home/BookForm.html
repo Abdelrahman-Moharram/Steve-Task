@@ -1,19 +1,48 @@
 <form action="" id="bookForm">
     <div id="bookFormalerts"></div>
-    <input type="text" id="id" value="" hidden>
+    <input type="text" name="id" id="id" value="" hidden>
 
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Book Name</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="some book name">
+        <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="some book name">
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+
+        <select class="form-control" id="category" name="category">
+            <option value=""></option>
+            {% for category in categories %}
+                <option value="{{category.id}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="author" class="form-label">Author</label>
+
+        <select class="form-control" id="author" name="author">
+            <option value=""></option>
+            {% for author in authors %}
+                <option value="{{author.id}}">{{author.name}}</option>
+            {% endfor %}
+        </select>
     </div>
     <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
     </div>
 
     <div class="mb-3">
         <label for="date" class="form-label">Publish Date</label>
-        <input type="date" class="form-control" id="date">
+        <input name="publish_at" type="date" class="form-control" id="date" >
+    </div>
+
+    <div class="mb-3">
+        <label for="price" class="form-label">price</label>
+        <input name="price" type="number" class="form-control" id="price" >
+    </div>
+    <div class="mb-3">
+        <label for="poster" class="form-label">poster</label>
+        <input name="poster" type="file" class="form-control" id="poster" >
     </div>
       
 </form>
