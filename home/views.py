@@ -57,3 +57,12 @@ def delete(request, id):
     return redirect('/')
 
 
+
+def multiplication(request):
+    number = request.GET.get('number')
+    if not number:
+        return HttpResponseNotFound('<h1 style="text-align:center;margin-top:40px">Number Shouldn\'t be Null or Empty</h1>')
+    if not number.isnumeric():
+        return HttpResponseNotFound(f'<h1 style="text-align:center;margin-top:40px">"{number}" Number is Not a Valid Number</h1>')
+
+    return render(request, 'home/multiplication.html', {'number': int(number)})

@@ -1,0 +1,35 @@
+
+
+{% extends 'base.html' %}
+
+
+
+{% block body %}
+    <div class="container pt-2">
+        {% for i in '0123456789'|make_list %}
+        <div class="d-flex justify-content-center my-1 gap-5">
+            <div class="px-4 py-2 shadow bg-white rounded d-flex gap-5">
+                {{number}} <i class="las la-times"></i> {{ forloop.counter }}
+            </div>
+            <div class="px-4 py-2 shadow bg-white rounded">
+                =
+            </div>
+            <div class="px-4 py-2 shadow bg-white rounded">
+                {% widthratio forloop.counter 1 number %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock body %}
+{% comment %} <tbody>
+    {% for i in '0123456789'|make_list %}
+        <tr>
+            <th>{{number}}</th>
+            <td>*</td>
+            <td>{{ forloop.counter }}</td>
+            <td>=</td>
+            <td>{% widthratio forloop.counter 1 number %}</td>
+        </tr>
+    {% endfor %}
+</tbody> {% endcomment %}
+    
